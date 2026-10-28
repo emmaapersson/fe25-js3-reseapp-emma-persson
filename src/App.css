@@ -68,6 +68,12 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
+.countries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
 @media (max-width: 600px) {
   .app {
     padding: 14px;
