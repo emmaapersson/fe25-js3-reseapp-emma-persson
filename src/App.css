@@ -1,0 +1,75 @@
+
+#root {
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.intro {
+  line-height: 1.5;
+}
+
+.search-section,
+.countries-section {
+  margin-bottom: 30px;
+}
+
+.search-section label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.search-section input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.regions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.region {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.region.active {
+  font-weight: bold;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .app {
+    padding: 14px;
+  }
+}
