@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useCountries } from '../Hooks/useCountries';
 import CountryCard from '../Components/countryCard';
 import SearchBar from '../Components/searchBar';
@@ -16,10 +16,13 @@ const regions = [
 ];
 
 function Homepage() {
-    const [search, setSearch] = useState('');
-    const [selectedRegion, setSelectedRegion] = useState('All');
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const search = searchParams.get('query') || ''
+    const selectedRegion = searchParams.get('region') || 'All'
+    const currentPage = Math.max(1, Number(searchParams.get('page')) || 1)
+
     const { countries, loading, error } = useCountries()
-    const [currentPage, setCurrentPage] = useState(1)
 
     const countriesPerPage = 12;
 
@@ -56,11 +59,19 @@ function Homepage() {
 
             <section className='search-section'>
                 <SearchBar
-                  search={search}
-                  onSearchChange={(value) => {
-                    setSearch(value)
-                    setCurrentPage(1)
-                  }}
+                    search={search}
+                    onSearchChange={(value) => {
+                        const newParams = new URLSearchParams(searchParams)
+
+                        if (value) {
+                        newParams.set('query', value)
+                        } else {
+                        newParams.delete('query')
+                        }
+
+                        newParams.delete('page')
+                        setSearchParams(newParams)
+                    }}
                 />
 
                 <h2>Explore by region</h2>
@@ -77,8 +88,16 @@ function Homepage() {
                             }
                             aria-pressed={selectedRegion === region}
                             onClick={() => {
-                                setSelectedRegion(region)
-                                setCurrentPage(1)
+                                const newParams = new URLSearchParams(searchParams)
+
+                                if (region === 'All') {
+                                    newParams.delete('region')
+                                } else {
+                                    newParams.set('region', region)
+                                }
+
+                                newParams.delete('page')
+                                setSearchParams(newParams)
                             }}
                         >
                           {region}
@@ -117,7 +136,12 @@ function Homepage() {
                             <Pagination
                               currentPage={currentPage}
                               totalPages={totalPages}
-                              onPageChange={setCurrentPage}
+                              onPageChange={(page) => {
+                                const newParams = new URLSearchParams(searchParams)
+
+                                newParams.set('page', String(page))
+                                setSearchParams(newParams)
+                                }}
                             />
                         )}
 
